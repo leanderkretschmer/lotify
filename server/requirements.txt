@@ -5,3 +5,4 @@ sqlmodel
 python-multipart
 websockets
 Jinja2 
+itsdangerous
