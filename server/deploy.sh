@@ -1,19 +1,9 @@
 #!/bin/bash
 set -e
 
-CONTAINER_NAME=lotify-server
-IMAGE_NAME=lotify-server
+echo "Starte Lotify-Server und WebUI via docker-compose..."
+docker-compose down || true
+docker-compose build
+docker-compose up -d
 
-# Stoppe und entferne alten Container, falls vorhanden
-if [ $(docker ps -aq -f name=$CONTAINER_NAME) ]; then
-    docker stop $CONTAINER_NAME || true
-    docker rm $CONTAINER_NAME || true
-fi
-
-echo "Baue Docker-Image..."
-docker build -t $IMAGE_NAME .
-
-echo "Starte Container..."
-docker run -d --name $CONTAINER_NAME -p 8080:8080 $IMAGE_NAME
-
-echo "Lotify-Server läuft auf Port 8080." 
+echo "Lotify-Server (API:8080) und WebUI (Port 80) laufen jetzt." 

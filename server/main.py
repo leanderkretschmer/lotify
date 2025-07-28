@@ -18,6 +18,7 @@ from fastapi.responses import RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 
 DB_FILE = "lotify.db"
+CDN_DIR = "cdn_storage"
 engine = create_engine(f"sqlite:///{DB_FILE}", echo=False)
 
 app = FastAPI()

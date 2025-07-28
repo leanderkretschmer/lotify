@@ -1,20 +1,11 @@
 #!/bin/bash
 set -e
 
-CONTAINER_NAME=lotify-server
-IMAGE_NAME=lotify-server
+echo "Stoppe und entferne alle Lotify-Container und Images..."
+docker-compose down --rmi all -v || true
 
-if [ $(docker ps -aq -f name=$CONTAINER_NAME) ]; then
-    docker stop $CONTAINER_NAME || true
-    docker rm $CONTAINER_NAME || true
-fi
+echo "Baue alles neu..."
+docker-compose build
+docker-compose up -d
 
-docker rmi $IMAGE_NAME || true
-
-echo "Baue Docker-Image..."
-docker build -t $IMAGE_NAME .
-
-echo "Starte Container..."
-docker run -d --name $CONTAINER_NAME -p 8080:8080 $IMAGE_NAME
-
-echo "Lotify-Server wurde komplett neu aufgesetzt." 
+echo "Lotify-Server (API:8080) und WebUI (Port 80) wurden komplett neu aufgesetzt." 
