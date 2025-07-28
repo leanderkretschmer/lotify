@@ -3,4 +3,5 @@ uvicorn[standard]
 cryptography
 sqlmodel
 python-multipart
-websockets 
+websockets
+Jinja2 

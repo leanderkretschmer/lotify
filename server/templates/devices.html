@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Lotify Geräteübersicht</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/admin/">Dashboard</a>
+        <a href="/admin/devices">Geräte</a>
+        <a href="#">Nachrichten</a>
+        <a href="#">CDN</a>
+    </nav>
+    <main>
+        <h1>Geräteübersicht</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Public Key</th>
+                    <th>API-Key</th>
+                    <th>Erstellt am</th>
+                    <th>Status</th>
+                    <th>Datenverbrauch (MB)</th>
+                    <th>Aktion</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for d in devices %}
+                <tr>
+                    <td><code>{{ d.public_key[:12] }}...{{ d.public_key[-6:] }}</code></td>
+                    <td><code title="Klicken zum Kopieren" onclick="navigator.clipboard.writeText('{{ d.api_key }}')">{{ d.api_key[:8] }}...{{ d.api_key[-4:] }}</code></td>
+                    <td>{{ d.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>{% if d.active %}<span class="active">Aktiv</span>{% else %}<span class="inactive">Inaktiv</span>{% endif %}</td>
+                    <td>{{ d.data_usage_mb }}</td>
+                    <td>
+                        {% if d.active %}
+                        <form method="post" action="/admin/devices/{{ d.id }}/deactivate" style="display:inline;">
+                            <button type="submit">Deaktivieren</button>
+                        </form>
+                        {% else %}
+                        <form method="post" action="/admin/devices/{{ d.id }}/activate" style="display:inline;">
+                            <button type="submit">Aktivieren</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html> 
